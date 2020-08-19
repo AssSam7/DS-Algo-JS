@@ -1,14 +1,16 @@
 class Node {
   constructor(value) {
     this.value = value;
+    this.prev = null;
     this.next = null;
   }
 }
 
-class LinkedList {
+class DoublyLinkedList {
   constructor(value) {
     this.head = {
       value: value,
+      prev: null,
       next: null,
     };
     this.tail = this.head;
@@ -17,14 +19,8 @@ class LinkedList {
 
   // Append to the linked list
   append(value) {
-    /* Old Approach using object */
-
-    // const newNode = {
-    //   value: value,
-    //   next: null,
-    // };
-    /* New Approach using Node class */
     const newNode = new Node(value);
+    newNode.prev = this.tail;
     this.tail.next = newNode;
     this.tail = newNode;
     this.length++;
@@ -33,15 +29,9 @@ class LinkedList {
 
   // Prepend to the linked list
   prepend(value) {
-    /* Old Approach using object */
-
-    // const newNode = {
-    //   value: value,
-    //   next: null,
-    // };
-    /* New Approach using Node class */
     const newNode = new Node(value);
     newNode.next = this.head;
+    this.head.prev = newNode;
     this.head = newNode;
     this.length++;
     return this;
@@ -60,9 +50,11 @@ class LinkedList {
     const newNode = new Node(value);
     // To get the leading node i.e. the node before current inserting element
     const leaderNode = this.traverseToIndex(index - 1);
-    const holdingPointer = leaderNode.next;
+    const followerNode = leaderNode.next;
     leaderNode.next = newNode;
-    newNode.next = holdingPointer;
+    newNode.next = followerNode;
+    newNode.prev = leaderNode;
+    followerNode.prev = newNode;
     this.length++;
     return this.traverseList();
   }
@@ -78,6 +70,7 @@ class LinkedList {
       let unwantedNode = this.traverseToIndex(index);
       const tailerNode = unwantedNode.next;
       unwantedNode.next = null;
+      tailerNode.prev = null;
       this.head = tailerNode;
       this.length--;
       return this.traverseList();
@@ -92,9 +85,9 @@ class LinkedList {
       const unwantedNode = leaderNode.next;
       const tailerNode = unwantedNode.next;
       leaderNode.next = tailerNode;
-
+      unwantedNode.prev = null;
       unwantedNode.next = null;
-
+      tailerNode.prev = null;
       this.length--;
       return this.traverseList();
     }
@@ -127,11 +120,11 @@ class LinkedList {
 }
 
 // Linked List: 10 --> 5 --> 16
-const myLinkedList = new LinkedList(10);
+const myLinkedList = new DoublyLinkedList(10);
+myLinkedList.append(2);
 myLinkedList.append(5);
 myLinkedList.append(16);
-// myLinkedList.prepend(2);
-// myLinkedList.insert(2, 15);
+// myLinkedList.insert(1, 1);
 // myLinkedList.insert(0, 99);
-console.log(myLinkedList.remove(1));
+console.log(myLinkedList.remove(3));
 // console.log(myLinkedList.traverseList());
