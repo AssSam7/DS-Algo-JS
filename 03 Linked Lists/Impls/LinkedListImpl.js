@@ -49,7 +49,7 @@ class LinkedList {
 
   // Insert the value at a specified index
   insert(index, value) {
-    // Check arguments
+    // Check the arguments
     if (index >= this.length) {
       return this.append(value);
     }
@@ -64,6 +64,20 @@ class LinkedList {
     leaderNode.next = newNode;
     newNode.next = holdingPointer;
     this.length++;
+    return this.traverseList();
+  }
+
+  // Remove a value at a specified index
+  remove(index) {
+    // Check the arguments
+    if (index > this.length) {
+      return;
+    }
+    const leaderNode = this.traverseToIndex(index - 1);
+    const unwantedNode = leaderNode.next;
+    const tailerNode = unwantedNode.next;
+    leaderNode.next = tailerNode;
+    this.length--;
     return this.traverseList();
   }
 
@@ -98,6 +112,7 @@ const myLinkedList = new LinkedList(10);
 myLinkedList.append(5);
 myLinkedList.append(16);
 myLinkedList.prepend(2);
-console.log(myLinkedList.insert(2, 15));
-console.log(myLinkedList.insert(0, 99));
+myLinkedList.insert(2, 15);
+myLinkedList.insert(0, 99);
+console.log(myLinkedList.remove(1));
 // console.log(myLinkedList.traverseList());
