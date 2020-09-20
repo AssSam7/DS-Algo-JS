@@ -8,43 +8,49 @@ class Node {
 class LinkedList {
   constructor(value) {
     this.head = {
-      value: value,
+      value: value ? value : null,
       next: null,
     };
     this.tail = this.head;
-    this.length = 1;
+    this.length = 0;
+  }
+
+  // Get element at a particular index
+  get(index) {
+    if (index < 0 || index > this.length) return;
+    return this.traverseToIndex(index).value;
   }
 
   // Append to the linked list
   append(value) {
-    /* Old Approach using object */
-
-    // const newNode = {
-    //   value: value,
-    //   next: null,
-    // };
-    /* New Approach using Node class */
     const newNode = new Node(value);
-    this.tail.next = newNode;
-    this.tail = newNode;
-    this.length++;
-    return this;
+    if (!this.head.value) {
+      this.head = newNode;
+      this.tail = this.head;
+      this.length++;
+      return this;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+      this.length++;
+      return this;
+    }
   }
 
   // Prepend to the linked list
   prepend(value) {
-    /* Old Approach using object */
-
-    // const newNode = {
-    //   value: value,
-    //   next: null,
-    // };
-    /* New Approach using Node class */
     const newNode = new Node(value);
-    newNode.next = this.head;
-    this.head = newNode;
-    this.length++;
-    return this;
+    if (!this.head.value) {
+      this.head = newNode;
+      this.tail = this.head;
+      this.length++;
+      return this;
+    } else {
+      newNode.next = this.head;
+      this.head = newNode;
+      this.length++;
+      return this;
+    }
   }
 
   // Insert the value at a specified index
@@ -111,27 +117,15 @@ class LinkedList {
   }
 
   // Traversal through the linked list and print in the form of an array
-  traverseList() {
-    let linkedListArr = [];
-    let currentNode = this.head;
-    for (let i = 0; i < this.length; i++) {
-      linkedListArr.push(currentNode.value);
-      currentNode = currentNode.next;
-    }
-    // while (currentNode !== null) {
-    //   linkedListArr.push(currentNode.value);
-    //   currentNode = currentNode.next;
-    // }
-    return linkedListArr;
-  }
+  traverseList() {}
 }
 
 // Linked List: 10 --> 5 --> 16
-const myLinkedList = new LinkedList(10);
+const myLinkedList = new LinkedList();
+myLinkedList.append(10);
 myLinkedList.append(5);
-myLinkedList.append(16);
-// myLinkedList.prepend(2);
-// myLinkedList.insert(2, 15);
-// myLinkedList.insert(0, 99);
-console.log(myLinkedList.remove(1));
+myLinkedList.prepend(16);
+console.log(myLinkedList.insert(1, 15));
+// Get element at index
+myLinkedList.get(1);
 // console.log(myLinkedList.traverseList());
